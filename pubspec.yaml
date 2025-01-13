@@ -1,6 +1,6 @@
 name: v_mobile
-description: "A new Flutter project."
-publish_to: "none"
+description: 'A new Flutter project.'
+publish_to: 'none'
 version: 1.0.0+1
 
 environment:
@@ -22,6 +22,9 @@ dependencies:
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
   logger: ^2.0.2+1
+  solar_icons:
+  google_fonts: ^6.1.0
+  flutter_svg: ^2.0.16
 
 dev_dependencies:
   flutter_test:
@@ -34,3 +37,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/images/logo.svg

@@ -1,22 +1,10 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'auth_models.dart';
+part of 'error_models.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
-
-_$TokenResponseImpl _$$TokenResponseImplFromJson(Map<String, dynamic> json) =>
-    _$TokenResponseImpl(
-      accessToken: json['accessToken'] as String,
-      accessTokenExpiry: json['accessTokenExpiry'] as String,
-    );
-
-Map<String, dynamic> _$$TokenResponseImplToJson(_$TokenResponseImpl instance) =>
-    <String, dynamic>{
-      'accessToken': instance.accessToken,
-      'accessTokenExpiry': instance.accessTokenExpiry,
-    };
 
 _$ErrorResponseImpl _$$ErrorResponseImplFromJson(Map<String, dynamic> json) =>
     _$ErrorResponseImpl(
