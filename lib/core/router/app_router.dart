@@ -5,7 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:v_mobile/core/theme/app_colors.dart';
 import 'package:v_mobile/src/presentation/pages/home_page.dart';
 import 'package:v_mobile/src/presentation/pages/login_page.dart';
+import 'package:v_mobile/src/presentation/pages/match_page.dart';
 import 'package:v_mobile/src/presentation/pages/profile_page.dart';
+import 'package:v_mobile/src/presentation/pages/swiper_page.dart';
 import 'package:v_mobile/src/presentation/providers/auth_provider.dart';
 import 'package:solar_icons/solar_icons.dart';
 
@@ -49,6 +51,14 @@ final routerProvider = Provider<GoRouter>((ref) {
               path: "/profile",
               builder: (context, state) => const ProfilePage(),
             ),
+            GoRoute(
+              path: "/meet",
+              builder: (context, state) => const SwiperPage(),
+            ),
+            GoRoute(
+              path: "/matches",
+              builder: (context, state) => const MatchPage(),
+            )
           ]),
     ],
   );
@@ -64,44 +74,48 @@ class ScaffoldWithBottomNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final showHeader =
+        ['/', '/profile'].contains(GoRouterState.of(context).matchedLocation);
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            SvgPicture.asset(
-              'assets/images/logo.svg',
-              height: 40,
-              width: 40,
-              semanticsLabel: 'Logo',
-            ),
-            const SizedBox(width: 10),
-            Text(
-              'Vemeet',
-              style: TextStyle(
-                color: AppColors.primary,
-                fontSize: 20,
-                fontWeight: FontWeight.w900,
+      appBar: showHeader
+          ? AppBar(
+              title: Row(
+                children: [
+                  SvgPicture.asset(
+                    'assets/images/logo.svg',
+                    height: 40,
+                    width: 40,
+                    semanticsLabel: 'Logo',
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    'Vemeet',
+                    style: TextStyle(
+                      color: AppColors.primary,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(SolarIconsBold.chatRound),
-            color: AppColors.primary,
-            onPressed: () {
-              context.go('/chats');
-            },
-          ),
-        ],
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0),
-          child: Container(
-            color: AppColors.border,
-            height: 1.0,
-          ),
-        ),
-      ),
+              actions: [
+                IconButton(
+                  icon: const Icon(SolarIconsBold.chatRound),
+                  color: AppColors.primary,
+                  onPressed: () {
+                    context.go('/chats');
+                  },
+                ),
+              ],
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(1.0),
+                child: Container(
+                  color: AppColors.border,
+                  height: 1.0,
+                ),
+              ),
+            )
+          : null,
       body: child,
       bottomNavigationBar: BottomNavigationBar(
         items: const [
@@ -127,6 +141,7 @@ class ScaffoldWithBottomNav extends StatelessWidget {
   int _calculateSelectedIndex(BuildContext context) {
     final location = GoRouterState.of(context).matchedLocation;
     if (location == '/') return 0;
+    if (location.startsWith('/meet')) return 1;
     if (location.startsWith('/profile')) return 2;
 
     return 0;
@@ -136,6 +151,8 @@ class ScaffoldWithBottomNav extends StatelessWidget {
     switch (index) {
       case 0:
         GoRouter.of(context).go('/');
+      case 1:
+        GoRouter.of(context).go('/meet');
       case 2:
         GoRouter.of(context).go('/profile');
     }

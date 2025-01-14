@@ -111,10 +111,10 @@ class DioClient {
     Map<String, dynamic>? queryParameters,
     dynamic data,
     Options? options,
-    required T Function(Map<String, dynamic>) parser,
+    required T Function(dynamic) parser,
   }) async {
     try {
-      final response = await _dio.request<Map<String, dynamic>>(
+      final response = await _dio.request<dynamic>(
         path,
         queryParameters: queryParameters,
         data: data,
@@ -122,13 +122,16 @@ class DioClient {
       );
 
       if (response.statusCode == 200 && response.data != null) {
-        return parser(response.data!);
+        return parser(response.data);
       }
 
-      throw ErrorResponse.fromJson(response.data!);
+      throw ErrorResponse.fromJson(response.data as Map<String, dynamic>);
     } on DioException catch (e) {
+      _logger.e('DioException:', error: e);
       if (e.response?.data != null) {
-        throw ErrorResponse.fromJson(e.response!.data);
+        if (e.response!.data is Map<String, dynamic>) {
+          throw ErrorResponse.fromJson(e.response!.data);
+        }
       }
       throw ErrorResponse(
         message: e.message ?? 'Network error occurred',
